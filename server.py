@@ -54,8 +54,8 @@ def handle_client(conn, addr):
                     else:
                         error_msg = f'\033[1;31mUser @{target_usr_name} not found!\033[0m'.encode(FORMAT)
                         conn.send(error_msg)
-            else:
-                target_usr_name = msg
+            elif msg.startswith('-'):
+                target_usr_name = msg[1::]
                 with clients_lock:
                     if target_usr_name in clients:
                         email_noti = f'\033[1;33mYou have received an email from {username}.\033[0m'
@@ -63,13 +63,12 @@ def handle_client(conn, addr):
                         try:
                             target_conn.send(email_noti.encode(FORMAT))
                             print(f'\r\033[1;33m{get_current_time()} {username} has sent email to {target_usr_name} \033[0m\n\033[1;36m[Server Message]:\033[0m', end='', flush=True)
-                            return
                         except Exception as e:
                             print(f"\033[1;31m[ERROR] Could not send email notification: {e}\033[0m")
                     else:
                         error_msg = f'\033[1;31mUser @{target_usr_name} not found!\033[0m'.encode(FORMAT)
                         conn.send(error_msg)
-                        return
+            else:
                 formatted_message = f"[{get_current_time()}] {username}: {msg}             "
                 print(f"\r\033[1m{formatted_message}\033[0m\n\033[1;36m[Server Message]:\033[0m ", end="", flush=True)
                 broadcast_message(formatted_message, conn)

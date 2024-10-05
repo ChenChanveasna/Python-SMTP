@@ -64,8 +64,10 @@ def handle_email():
     """Handle email sending process."""
     
     sender_email = input('Enter your email (sender): ')
-    
     receiver_username = input('Enter receiver username: ')
+    if not receiver_username.startswith('-'):
+        receiver_username = f'-{receiver_username}'
+    
     receiver_email = input('Enter receiver email: ')
     smtp(sender_email, receiver_email)
     send(connection, receiver_username)
@@ -97,7 +99,6 @@ def start():
             print("\033[1;36m[Back to Message Operation]\033[0m")
         else:
             send(connection, msg)
-            print("\033[1;32m[MESSAGE SENT] Your message was sent successfully.\033[0m")
 
     print('\033[1;33mDisconnected\033[0m')
     connection.close()
