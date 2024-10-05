@@ -55,7 +55,6 @@ def handle_client(conn, addr):
                         error_msg = f'\033[1;31mUser @{target_usr_name} not found!\033[0m'.encode(FORMAT)
                         conn.send(error_msg)
             else:
-                print(msg)
                 target_usr_name = msg
                 with clients_lock:
                     if target_usr_name in clients:
